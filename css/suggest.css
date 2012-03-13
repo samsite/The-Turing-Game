@@ -1,0 +1,17 @@
+#thanksMsg {
+	display:none;
+}
+#submitButton {
+	float:right;
+	position:relative;
+	top:-5px;
+}
+#questionText {
+	width:845px;
+}
+#answerAs {
+	width:575px;
+	height:30px;
+	position:relative;
+	left:10px;
+}

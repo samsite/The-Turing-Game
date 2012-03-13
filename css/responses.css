@@ -1,0 +1,42 @@
+div.answer {
+	padding:10px;
+	padding-top:20px;
+	position:relative;
+	border-bottom: 1px solid #a0a0a0;
+}
+.answerTag { }
+div.answerflag {
+	position:absolute;
+	top:20px;
+	right:10px;
+	width:24px;
+	height:24px;
+}
+div.answertext {
+	width:690px;
+	font-weight:bold;
+}
+div.answercontrols {
+	position:relative;
+	width:745px;
+	height:32px;
+	line-height:32px;
+	margin-top:25px;
+	font-size:12px;
+}
+div.answerlike {
+	width:200px;
+	padding-top:6px;
+}
+div.answervote {
+	position:absolute;
+	top:0px;
+	right:0px;
+	height:32px;
+	line-height:32px;
+}
+#myanswer {
+	font-style:italic;
+	color:#636363;
+	font-weight:bold;
+}

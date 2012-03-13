@@ -1,0 +1,21 @@
+div.popup{
+	display:none;
+	position:fixed;
+	_position:absolute; /* hack for internet explorer 6*/
+	background-image:url(../images/popupback.png);
+	z-index:2;
+	border-radius:5px;
+	color: #FFF;
+}
+div.popupBack{
+	display:none;
+	position:fixed;
+	_position:absolute; /* hack for internet explorer 6*/
+	height:100%;
+	width:100%;
+	top:0;
+	left:0;
+	background:#000000;
+	border:1px solid #cecece;
+	z-index:1;
+}

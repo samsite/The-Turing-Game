@@ -1,0 +1,49 @@
+#responseText {
+	width:850px;
+}
+#respondButton {
+	position: relative;
+	left: 692px;
+}
+#votedAll {
+	display:none;
+}
+#logoutPopup {
+	height:122px;
+	width:500px;
+}
+#logoutPopup , #honestPopup{
+	padding: 25px;
+}
+#honest {
+	font-size: 24px;
+}
+#answertrue, #answerfalse {
+	float: right;
+	position: relative;
+	left: 10px;
+}
+.slider {
+	width: 200px;
+	height: 10px;
+}
+#controls {
+	float:right;
+}
+td.truthCol {
+	width: 80px;
+}
+td.sliderCol {
+	width: 220px;
+}
+td.lieCol {
+	width: 50px;
+}
+div.answer {
+	height: 90px;
+	border-bottom: solid 1px #878686;
+	margin-bottom: 30px;
+}
+.answerText {
+	font-weight: bold;
+}
