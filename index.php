@@ -22,6 +22,12 @@ $user     = User::FetchCurrentUser();
 
 if($user != null)
 {
+	if($user->IsBanned())
+	{
+		header('Location: banned.php');
+		exit(0);
+	}
+	
 	// Update user Facebook info every time index.php is loaded
 	$user->GetFacebookInfo(true);
 	$picURL = $user->GetFacebookPictureURL();
@@ -128,7 +134,7 @@ if($user != null && !$qotd->HasUserAnswered($user))
 			<div class="box">
 				<img src="images/qofdheader.png" alt="Question of the Day" />
 				<br/><br/>
-				<span id="question"><?php echo $qotd->GetText(); ?> Answer as a <strong><?php echo $qotd->GetPoseAs(); ?></strong>.</span>
+				<span class="subHeading" id="question"><?php echo $qotd->GetText(); ?> Answer as a <strong><?php echo $qotd->GetPoseAs(); ?></strong>.</span>
 			</div>
 			<div class="box">
 				<img src="images/yourresponse.png" alt="Your Response" />
@@ -218,7 +224,13 @@ else
 				<a id="answerfalse" class="button">No</a>
 			</div>
 			<div class="popup" id="accountPopup">
-				Account settings go here...
+				<span id="accountMsg">Change your account settings here.</span><br /><br /><br />
+				<div id="accountAlias">
+					<strong>Alias:</strong><input id="accountAliasTBox" class="textbox" type="text"></input>
+				</div>
+				<br />
+				<a id="accountSaveButton" class="button">Save</a>
+				<a id="accountCloseButton" class="button">Close</a>
 			</div>
 			<div class="popup" id="logoutPopup">
 				<img src="images/thanks.png" alt="Thanks for playing!" />

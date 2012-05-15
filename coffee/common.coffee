@@ -1,5 +1,5 @@
 accountMsg     = "#accountMsg"
-aliasText      = "#aliastext"
+aliasText      = "#accountAliasTBox"
 username       = "#username"
 
 accountPopup = null
@@ -16,7 +16,6 @@ logoutFinished = () ->
 	return
 
 closeAccountPage = () ->
-	hideAccountMsg()
 	accountPopup.hide()
 	return
 
@@ -33,16 +32,12 @@ openAccountPage = () ->
 		alert "Failed to retrieve user settings."
 		return
 	
+	showAccountMsg "Change your account settings here."
 	accountPopup.show()
 	return
 
 showAccountMsg = (msg) ->
-	$(accountMsg).html msg + "<br /><br />"
-	$(accountMsg).show "fast"
-	return
-
-hideAccountMsg = () ->
-	$(accountMsg).hide "fast"
+	$(accountMsg).html msg
 	return
 
 saveUserSettings = () ->
@@ -67,7 +62,7 @@ saveUserSettings = () ->
 			showAccountMsg "Alias already taken. Please select another."
 		return
 	.fail () ->
-		alert "Failed to save user settings. Please try again."
+		showAccountMsg "Failed to save user settings. Please try again."
 		return
 	return
 
@@ -78,9 +73,10 @@ commonInit = () ->
 
 	$("#logoutLink").click startLogout
 	$("#accountLink").click openAccountPage
-	$("#savesettings").click saveUserSettings
+	$("#accountSaveButton").click saveUserSettings
+	$("#accountCloseButton").click closeAccountPage
 	
-	accountPopup = new Popup "#account",500,100
+	accountPopup = new Popup "#account",400,130
 	logoutPopup = new Popup "#logout",500,65
 	
 	return

@@ -13,22 +13,21 @@ require_once ROOT_DIR.'/model/users.php';
 
 $user = User::FetchCurrentUser();
 $expectedParams = array(
-	'userid',
-	'on'
+	'id'
 );
 
 if($user != null &&
    $user->HasAdminPrivileges() &&
    Validator::IsValidPOST($expectedParams))
 {
-	$targetUser = User::FetchByID(intval($_POST['userid']));
+	$targetUser = User::FetchByID(intval($_POST['id']));
 	
 	if($targetUser != null && $targetUser->GetID() != $user->GetID())
 	{
-		if($_POST['on'] == 'true')
-			$targetUser->Ban();
-		else
+		if($targetUser->IsBanned())
 			$targetUser->UnBan();
+		else
+			$targetUser->Ban();
 		
 		$targetUser->CommitChanges();
 	}

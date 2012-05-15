@@ -6,10 +6,12 @@
 // The Turing Game
 /////////////////////////////////////////////////////////////////////////
 
+// Includes
 require_once 'include.php';
 
+require_once ROOT_DIR.'/model/admin.php';
+require_once ROOT_DIR.'/model/responses.php';
 require_once ROOT_DIR.'/misc/validation.php';
-require_once ROOT_DIR.'/model/users.php';
 
 $user = User::FetchCurrentUser();
 $expectedParams = array(
@@ -20,22 +22,11 @@ if($user != null &&
    $user->HasAdminPrivileges() &&
    Validator::IsValidPOST($expectedParams))
 {
-	$targetUser = User::FetchByID(intval($_POST['id']));
-	
-	if($targetUser != null && $targetUser->GetID() != $user->GetID())
-	{
-		if($targetUser->HasAdminPrivileges())
-			$targetUser->SetAdminPrivileges(0);
-		else
-			$targetUser->SetAdminPrivileges(1);
-		
-		$targetUser->CommitChanges();
-	}
-	
-	echo json_encode(true);
+	$r = Response::FetchByID($_POST['id']);
+	if($r != null)
+		echo $r->JSONEncode();
+	else
+		echo '0';
 }
-else
-{
-	echo json_encode(false);
-}
+
 ?>

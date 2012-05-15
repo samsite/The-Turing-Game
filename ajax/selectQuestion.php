@@ -14,7 +14,7 @@ require_once ROOT_DIR.'/model/admin.php';
 
 $user = User::FetchCurrentUser();
 $expectedParams = array(
-	'qid',
+	'id',
 	'suggested'
 );
 
@@ -22,7 +22,7 @@ if($user != null &&
    $user->HasAdminPrivileges() &&
    Validator::IsValidPOST($expectedParams))
 {
-	Admin::SetQotD(intval($_POST['qid']), $_POST['suggested'] == '1');
+	echo Admin::SetQotD(intval($_POST['id']), $_POST['suggested'] == 'true');
 }
 
 ?>

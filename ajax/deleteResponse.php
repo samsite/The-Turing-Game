@@ -14,14 +14,14 @@ require_once ROOT_DIR.'/model/admin.php';
 
 $user = User::FetchCurrentUser();
 $expectedParams = array(
-	'responseID'
+	'id'
 );
 
 if($user != null &&
    $user->HasAdminPrivileges() &&
    Validator::IsValidPOST($expectedParams))
 {
-	Response::RemoveByID($_POST['responseID']);
+	Response::RemoveByID($_POST['id']);
 	
 	$success = array("success" => true);
 	return json_encode($success);

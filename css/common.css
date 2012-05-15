@@ -1,3 +1,6 @@
+strong {
+	font-weight:bold;
+}
 /* -- Navigation Menu -- */
 #menu li {
 	float: left;
@@ -58,6 +61,9 @@ a.button:active {
 	background-position: 0 -96px;
 	padding-top:2px;
 }
+#accountSaveButton, #accountCloseButton {
+	float:right;
+}
 
 /* -- User Widget -- */
 #userinfo {
@@ -84,6 +90,7 @@ td.usertext {
 a.userlink {
 	font-size:12px;
 	cursor:pointer;
+	color:#7ac3ff;
 }
 #signin {
 	position: relative;
@@ -107,6 +114,7 @@ div.box {
 	border-radius:5px;
 	padding: 25px;
 	margin-top: 40px;
+	position:relative;
 }
 #content {
 	width: 900px;
@@ -115,4 +123,21 @@ div.box {
 .subHeading {
 	font-size:24px;
 	color:#717171;
+}
+.textbox {
+	height:25px;
+	border-radius:5px;
+}
+#accountPopup {
+	padding:20px;
+}
+#accountAliasTBox {
+	float:right;
+	width:250px;
+}
+#accountAlias {
+	height:25px;
+	line-height:25px;
+	padding-right:9px;
+	padding-left:15px;
 }

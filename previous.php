@@ -14,7 +14,7 @@ require_once 'model/questions.php';
 require_once 'model/users.php';
 require_once 'model/facebook.php';
 
-$qotd     = Question::FetchPreviousQOTD();
+$qotds    = Question::FetchNPreviousQOTD(5);
 $loginURL = FacebookHelper::GetLoginURL();
 $picURL   = '';
 $name     = '';
@@ -22,6 +22,12 @@ $user     = User::FetchCurrentUser();
 
 if($user != null)
 {
+	if($user->IsBanned())
+	{
+		header('Location: banned.php');
+		exit(0);
+	}
+	
 	// Update user Facebook info every time suggest.php is loaded
 	$user->GetFacebookInfo(true);
 	$picURL = $user->GetFacebookPictureURL();
@@ -100,7 +106,7 @@ else
 					<td id="navcenter">
 						<ol id="menu">
 							<li id="indexpg">TODAY'S QUESTION</li>
-							<li class="selected" id="previouspg">PREVIOUS QUESTION</li>
+							<li class="selected" id="previouspg">PREVIOUS QUESTIONS</li>
 							<li id="suggestpg">SUGGEST QUESTION</li>
 							<li id="aboutpg">ABOUT</li>
 							<?php
@@ -133,28 +139,115 @@ if($user == null)
 <?php
 }
 /////////////////////////////////////////////////////////////////////////
-// Logged in and a previous question exists
+// Logged in and at least one previous question exists
 /////////////////////////////////////////////////////////////////////////
-else if($qotd != null)
+else if($qotds != null)
 {
+	for($q = 0; $q < count($qotds); $q++)
+	{
+		$qotd = $qotds[$q];
 ?>
 			<div class="box">
-				<img src="images/pqofdheader.png" alt="Previous Question of the Day" />
+				<img src="images/question.png" alt="Previous Question of the Day" />
+				<img class="pqexpand" src="images/pqexpand.png" id="expand<?php echo $q; ?>" alt="+" onclick="toggleQ(<?php echo $q; ?>);" />
 				<br/><br/>
 				<span class="subHeading"><?php echo $qotd->GetText(); ?> Answer as a <strong><?php echo $qotd->GetPoseAs(); ?></strong>.</span>
 			</div>
 <?php
-	/////////////////////////////////////////////////////////////////////////
-	// User has answered previous question
-	/////////////////////////////////////////////////////////////////////////
-	if($qotd->HasUserAnswered($user))
-	{
+		/////////////////////////////////////////////////////////////////////////
+		// User has answered previous question
+		/////////////////////////////////////////////////////////////////////////
+		if($qotd->HasUserAnswered($user))
+		{
 ?>
-			<div class="box">
+			<div class="box qtag" id="q<?php echo $q; ?>_r">
 				<img src="images/yourresponse.png" alt="Your Response" />
 				<br/><br/>
 				<span class="subHeading"><?php echo $qotd->GetUserResponse($user)->GetAnswerText(); ?></span>
 			</div>
+<?php
+		}
+	/////////////////////////////////////////////////////////////////////////
+	// User answers section
+	/////////////////////////////////////////////////////////////////////////
+?>
+			<div class="box qtag" id="q<?php echo $q; ?>_a">
+				<img src="images/answers.png" alt="Answers" />
+				<br/><br/>
+				<?php
+					$responses = array();
+					if($user != null)
+						$responses = $qotd->GetUnflaggedResponsesForUser($user);
+					else
+						$responses = $qotd->GetResponses();
+					
+					$responseCount = count($responses);
+					if($responseCount == 1)
+						$responses = array($responses);
+					
+					for($i = 0; $i < $responseCount; $i++)
+					{
+						$response = $responses[$i];
+						$responseUser = User::FetchByID($response->GetUserID());
+						
+						$profileLink = null;
+						$nameStr = $responseUser->GetAlias();
+						if($nameStr == "")
+						{
+							$nameStr = $responseUser->GetFacebookName();
+							$profileLink = $responseUser->GetFacebookProfileLink();
+							$nameStr = "<a href='${profileLink}'>${nameStr}</a>";
+						}
+						
+						$percent = 100.0 - ($response->GetAverageRating() + 0.0) * 10.0;
+						
+						$id = $responses[$i]->GetID();
+						$text = $responses[$i]->GetAnswerText();
+						$permalink = "http://128.61.105.227/response.php?id=${id}";
+						$honest = $response->IsHonest();
+						
+						$left = "";
+						$right = "";
+						$poseAs = ucwords($qotd->GetPoseAs());
+						
+						if($honest)
+						{
+							$right = $poseAs;
+							$left = "Not a " . $right;
+						}
+						else
+						{
+							$left = $poseAs;
+							$right = "Not a " . $left;
+						}
+						
+						$markeroffset = intval(11.0 + 274.0 * ($percent / 100.0));
+						
+echo <<<EOT
+						<div id="a_${id}" class="answer">
+							<div class="answerUser">
+								${nameStr}<span id="u_${id}"> said:</span>
+								<div class="answerFlag">
+									<img class="flag" id="f_${id}" onClick="toggleResponseFlag(${id});" src="images/flag_gray.png" />
+								</div>
+							</div>
+							<div id="c_${id}">
+								<div class="answerText">${text}</div>
+								<div class="answerControls">
+									<fb:like href="${permalink}" layout="button_count" send="true" show_faces="false"></fb:like>
+									<div class="answerResult">
+										<img class="marker" style="left:${markeroffset}px;" src="images/verdictmarker.png" />
+										<span class="verdictleft">${left}</span>
+										<span class="verdictright">${right}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+EOT;
+					}
+				?>
+			</div>
+			<br /><br />
 <?php
 	}
 }
@@ -167,11 +260,25 @@ else
 			<div class="box">
 				<img src="images/pqofdheader.png" alt="Previous Question of the Day" />
 				<br/><br/>
-				<span id="question">There is no previous question. Sorry!</span>
+				<span id="question">There are no previous questions. Sorry!</span>
 			</div>
 <?php
 }
 ?>
+			<div class="popup" id="accountPopup">
+				<span id="accountMsg"></span><br /><br /><br />
+				<div id="accountAlias">
+					<strong>Alias:</strong><input id="accountAliasTBox" class="textbox" type="text"></input>
+				</div>
+				<br />
+				<a id="accountSaveButton" class="button">Save</a>
+				<a id="accountCloseButton" class="button">Close</a>
+			</div>
+			<div class="popup" id="logoutPopup">
+				<img src="images/thanks.png" alt="Thanks for playing!" />
+				<br/><br/>
+				Logging out of the Turing Game...
+			</div>
 		</div>
 	</body>
 </html>

@@ -1,0 +1,87 @@
+#adminmenucontainer {
+	float:left;
+	width:200px;
+}
+#admincontent {
+	position:relative;
+	left:-6px;
+	float:left;
+	width:660px;
+	background-image:url(../images/adminsep.png);
+	background-repeat:repeat-y;
+	padding-left:25px;
+}
+#content {
+	padding-top: 40px;
+}
+#adminmenu li {
+	height:50px;
+	line-height:50px;
+	padding-left:10px;
+}
+#adminmenu li:hover {
+	background-color: #6190ff;
+	cursor:pointer;
+	padding-left:20px;
+}
+li.adminselected {
+	background-color: #1249cf;
+	color:#FFF;
+	font-weight:bold;
+}
+#listfilter {
+	float:left;
+	margin-top:10px;
+	margin-right:20px;
+	width:400px;
+}
+#listsearch {
+	float:left;
+}
+#listresults {
+	margin-top:10px;
+	width:650px;
+}
+div.result {
+	padding:20px;
+	padding-right:0px;
+	width:555px;
+	background-color:#d3d3d3;
+	cursor:pointer;
+	line-height:20px;
+}
+div.result:hover {
+	background-color:#6190ff;
+}
+div.altcolor {
+	background-color:#e0e0e0;
+}
+div.editorContent {
+	padding-left:30px;
+}
+a.hbutton {
+	float:left;
+}
+div.sep {
+	width:600px;
+	height:1px;
+	background-color:#000;
+	margin-top:10px;
+	margin-bottom:15px;
+}
+div.info {	
+	float:left;
+	line-height:25px;
+}
+div.infoL {
+	width:125px;
+}
+h1 {
+	font-size:28px;
+	font-weight:bold;
+}
+h2 {
+	font-size:20px;
+	font-weight:bold;
+	color:#4d4d4d;
+}

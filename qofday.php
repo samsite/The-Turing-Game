@@ -16,6 +16,15 @@ require_once 'model/users.php';
 $user = User::FetchCurrentUser();
 $qotd = Question::FetchQOTD();
 
+if($user != null)
+{
+	if($user->IsBanned())
+	{
+		header('Location: banned.php');
+		exit(0);
+	}
+}
+
 ?>
 
 <?php

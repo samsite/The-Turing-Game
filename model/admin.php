@@ -60,7 +60,7 @@ class Admin
 	#
 	public static function FindResponses($search, $resultsPerPage, $page)
 	{
-		return self::ToPaginatedList(Response::Find($search), $resultsPerPage, $page); //not sure if this function exists.
+		return self::ToPaginatedList(Response::FindResponses($search), $resultsPerPage, $page); //not sure if this function exists.
 	}
 	
 	public static function GetResponsesByUID($uid, $resultsPerPage, $page)
@@ -84,8 +84,10 @@ class Admin
 		if($question != null)
 		{
 			Response::CalculateResponseScores();
-			$question->SelectForPlay();
+			return $question->SelectForPlay();
 		}
+		
+		return -1;
 	}
 }
 

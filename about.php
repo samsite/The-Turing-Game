@@ -22,6 +22,12 @@ $user     = User::FetchCurrentUser();
 
 if($user != null)
 {
+	if($user->IsBanned())
+	{
+		header('Location: banned.php');
+		exit(0);
+	}
+	
 	// Update user Facebook info every time suggest.php is loaded
 	$user->GetFacebookInfo(true);
 	$picURL = $user->GetFacebookPictureURL();
@@ -45,6 +51,7 @@ if($user != null)
 		<link rel="stylesheet" type="text/css" href="css/reset.css" />
 		<link rel="stylesheet" type="text/css" href="css/popup.css" />
 		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<link rel="stylesheet" type="text/css" href="css/about.css" />
 	</head>
 	<body>
 		<div id="fb-root"></div>
@@ -123,6 +130,31 @@ else
 				Is it possible to create a genderless classroom? A raceless courtroom? A rich environment where a user can be not just a pseudonym, but a person with a full history of culturally-bound experiences? For community designers, these are crucial questions. The Turing Game is a participatory collaborative learning experience to help us understand these phenomena.
 				<br /><br />
 				Here at the Georgia Institute of Technology, we have created a game to help us understand issues of online identity. In this environment, which we call The Turing Game, a panel of users all pretend to be a member of some group, such as women. Some of the users, who are women, are trying to prove that fact to their audience. Others are men, trying to masquerade as women. An audience of both genders tries to discover whom the imposters are, by asking questions and analyzing the panel members' answers. Games can cover aspects of gender, race, or any other cultural marker of the users' choice. Currently, we have a working version and we are in the Beta testing phase.
+			</div>
+			<div class="box">
+				<img src="images/credits.png" alt="Credits" />
+				<br/><br/>
+				<strong>Instructor</strong><br />
+				<div class="creditbox">
+					Amy Bruckman
+				</div>
+				<br /><br />
+				<strong>Developers</strong><br />
+				<div class="creditbox">
+				Sam Brown<br />
+				Henry Dooley<br />
+				Gaurav Mathur<br />
+				Kyle Stafford
+				</div>
+			</div>
+			<div class="popup" id="accountPopup">
+				<span id="accountMsg"></span><br /><br /><br />
+				<div id="accountAlias">
+					<strong>Alias:</strong><input id="accountAliasTBox" class="textbox" type="text"></input>
+				</div>
+				<br />
+				<a id="accountSaveButton" class="button">Save</a>
+				<a id="accountCloseButton" class="button">Close</a>
 			</div>
 		</div>
 	</body>

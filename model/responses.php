@@ -203,7 +203,6 @@ class Response implements JSONEncodable
 		);
 		
 		return json_encode($JSON);
-		
 	}
 	
 	public function SetAverageRating($rating)
@@ -436,6 +435,15 @@ class Response implements JSONEncodable
 		$query = "SELECT DISTINCT * FROM `response` WHERE " .
 				 "`answerText` LIKE '%${escapedStr}%' AND ".
 				 "responseID IN(SELECT DISTINCT `contentID` FROM `flags` WHERE `type`='response')";
+		
+		return self::Fetch($query, false, $dbName);
+	}
+	
+	public static function FindResponses($str, $dbName='default')
+	{
+		$escapedStr = Database::Escape($str);
+		$query = "SELECT DISTINCT * FROM `response` WHERE " .
+				 "`answerText` LIKE '%${escapedStr}%'";
 		
 		return self::Fetch($query, false, $dbName);
 	}

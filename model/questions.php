@@ -261,6 +261,7 @@ class Question implements JSONEncodable
 	
 	#
 	# Selects a suggested question as the question of the day.
+	# Returns the id of the new question fo the day.
 	#
 	public function SelectForPlay($dbName='default')
 	{
@@ -271,6 +272,8 @@ class Question implements JSONEncodable
 		
 		$id = Database::GetLastInsertID($dbName);
 		$this->Copy(self::FetchSelectedByID($id, $dbName));
+		
+		return $id;
 	}
 	
 	#
@@ -326,6 +329,15 @@ class Question implements JSONEncodable
 	public static function FetchPreviousQOTD($dbName='default')
 	{
 		$query = "SELECT * FROM `question` ORDER BY `questionID` DESC LIMIT 1 OFFSET 1";
+		return self::Fetch($query, false, false, $dbName);
+	}
+	
+	#
+	# Returns "n" previous questions of the day.
+	#
+	public static function FetchNPreviousQOTD($n, $dbName='default')
+	{
+		$query = "SELECT * FROM `question` ORDER BY `questionID` DESC LIMIT ${n} OFFSET 1";
 		return self::Fetch($query, false, false, $dbName);
 	}
 	

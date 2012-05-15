@@ -1,0 +1,52 @@
+div.answer {
+	margin-bottom:15px;
+	border-bottom:solid 1px #878686;
+}
+div.answerUser {
+	height:30px;
+	line-height:30px;
+	font-size:12px;
+}
+div.answerText {
+	font-weight:bold;
+	padding:10px;
+	padding-left:20px;
+	padding-right:20px;
+}
+div.answerControls {
+	height:57px;
+	padding-top:10px;
+	padding-bottom:10px;
+	font-size:12px;
+}
+div.answerFlag {
+	float:right;
+	padding-top:4px;
+	cursor:pointer;
+}
+div.answerResult {
+	float:right;
+	width:302px;
+	height:57px;
+	background-image:url(../images/verdict.png);
+}
+img.marker {
+	position:relative;
+	top:21px;
+}
+span.verdictleft {
+	position:relative;
+	top:-3px;
+}
+span.verdictright {
+	float:right;
+	position:relative;
+	top:4px;
+	right:10px;
+}
+img.pqexpand {
+	position:absolute;
+	left:859px;
+	top:0px;
+	cursor:pointer;
+}

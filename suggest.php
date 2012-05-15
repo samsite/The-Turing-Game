@@ -22,6 +22,12 @@ $user     = User::FetchCurrentUser();
 
 if($user != null)
 {
+	if($user->IsBanned())
+	{
+		header('Location: banned.php');
+		exit(0);
+	}
+
 	// Update user Facebook info every time suggest.php is loaded
 	$user->GetFacebookInfo(true);
 	$picURL = $user->GetFacebookPictureURL();
@@ -137,9 +143,6 @@ if($user != null)
 				<br/><br/>
 				<span class="subHeading"><a id="submitNewQ" href="#">Click here</a> if you'd like to submit another.</span>
 			</div>
-			<div class="popup" id="accountPopup">
-				Account settings go here...
-			</div>
 <?php
 }
 /////////////////////////////////////////////////////////////////////////
@@ -156,6 +159,15 @@ else
 <?php
 }
 ?>
+			<div class="popup" id="accountPopup">
+				<span id="accountMsg"></span><br /><br /><br />
+				<div id="accountAlias">
+					<strong>Alias:</strong><input id="accountAliasTBox" class="textbox" type="text"></input>
+				</div>
+				<br />
+				<a id="accountSaveButton" class="button">Save</a>
+				<a id="accountCloseButton" class="button">Close</a>
+			</div>
 		</div>
 	</body>
 </html>

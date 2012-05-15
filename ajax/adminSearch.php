@@ -16,15 +16,11 @@ require_once ROOT_DIR.'/misc/uihelp.php';
 function CreateResults($findFunc, $genFunc)
 {
 	$list = Admin::$findFunc($_POST['searchString'], intval($_POST['resultsPerPage']), 0);
-	if(count($list) <= 0)
-	{
-		echo "Nothing found.";
-	}
 	
-	for($i = 0; $i < count($list); $i++)
-	{
-		$genFunc($list[$i]);
-	}
+	if(count($list) <= 0)
+		echo "Nothing found.";
+	else
+		$genFunc($list);
 }
 
 $user = User::FetchCurrentUser();
@@ -33,39 +29,33 @@ $expectedParams = array(
 	'searchFor',
 	'resultsPerPage'
 );
+$success = array("success" => false);
 
 if($user != null &&
    $user->HasAdminPrivileges() &&
    Validator::IsValidPOST($expectedParams))
 {
+	$success = array("success" => true);
 	switch ($_POST['searchFor'])
 	{
 		case "Selected Questions":
-			CreateResults('FindSelectedQuestions', 'CreateQuestionResult');
+			CreateResults('FindSelectedQuestions', 'CreatePlayedQuestionResults');
 			break;
 		case "Suggested Questions":
-			CreateResults('FindSuggestedQuestions', 'CreateQuestionResult');
+			CreateResults('FindSuggestedQuestions', 'CreateSuggestedQuestionResults');
 			break;
 		case "Users":
-			CreateResults('FindUsers', 'CreateUserResult');
+			CreateResults('FindUsers', 'CreateUserResults');
 			break;
-		
 		case "Flagged Responses":
-			CreateResults('FindFlaggedResponses', 'CreateResponseResult');
+			CreateResults('FindResponses', 'CreateResponseResults');
 			break;
-			
 		default:
-			echo "No functions found for ".$_POST['searchFor'];
+			$success = array("success" => false);
 			break;
 	}
-	
-	$success = array("success" => true);
-	return json_encode($success);
+}
 
-}
-else
-{
-	$success = array("success" => false);
-	return json_encode($success);
-}
+return json_encode($success);
+
 ?>
